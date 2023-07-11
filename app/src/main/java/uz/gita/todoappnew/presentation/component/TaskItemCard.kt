@@ -26,6 +26,7 @@ import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.SwipeToDismissDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.*
@@ -34,12 +35,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.ColorUtils
 import uz.gita.todoappnew.data.model.TaskData
 import uz.gita.todoappnew.util.getCalendar
 import uz.gita.todoappnew.util.getColorFromCalendar
@@ -58,6 +62,7 @@ fun TaskItemCard(
     var show by remember { mutableStateOf(true) }
 
     var dismissState = rememberDismissState(
+        positionalThreshold = { _ -> 150.dp.toPx() },
         confirmValueChange = {
             when (it) {
                 DismissValue.DismissedToStart -> {
@@ -102,7 +107,8 @@ fun TaskItemCard(
                     color = color,
                     onCheckboxChange = onCheckboxChange
                 )
-            }
+            },
+
         )
     }
 
@@ -129,7 +135,11 @@ fun TaskContent(
         horizontalArrangement = Arrangement.Start
     ) {
 
-        Card(colors = CardDefaults.cardColors(containerColor = color)) {
+        Card(colors = CardDefaults.cardColors(
+            containerColor = color,
+//            contentColor = Color(ColorUtils.blendARGB(color.toArgb(), Color.Black.toArgb(), 0.8f))
+            contentColor = Color.White
+        )) {
 
 //            Text(text = if (task.notified) "Notified" else "Not notified", modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 8.dp), textAlign = TextAlign.End)
 
@@ -167,7 +177,7 @@ fun TaskContent(
                         } else {
                             TextStyle(
                                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                                color = MaterialTheme.colorScheme.tertiary
+//                                color = MaterialTheme.colorScheme.tertiary
                             )
                         },
                         maxLines = 1,
@@ -188,7 +198,7 @@ fun TaskContent(
                         } else {
                             TextStyle(
                                 fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                color = MaterialTheme.colorScheme.tertiary
+//                                color = MaterialTheme.colorScheme.tertiary
                             )
                         },
                         modifier = Modifier.wrapContentHeight(),
@@ -207,7 +217,7 @@ fun TaskContent(
                         } else {
                             TextStyle(
                                 fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                                color = MaterialTheme.colorScheme.tertiary
+//                                color = MaterialTheme.colorScheme.tertiary
                             )
                         },
                         modifier = Modifier
